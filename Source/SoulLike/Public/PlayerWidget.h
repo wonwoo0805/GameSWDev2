@@ -16,9 +16,10 @@ UCLASS()
 class SOULLIKE_API UPlayerWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	UPlayerWidget(const FObjectInitializer& ObjectInitializer);
+	
 	
 public:
+	UPlayerWidget(const FObjectInitializer& ObjectInitializer);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stat")
 	int32 MaxHp = 700;
