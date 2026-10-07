@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "ItemObject.h"
-#include "Heals.generated.h"
+#include "Heals_Generation.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SOULLIKE_API UHeals : public UItemObject
+class SOULLIKE_API UHeals_Generation : public UItemObject
 {
 	GENERATED_BODY()
 	

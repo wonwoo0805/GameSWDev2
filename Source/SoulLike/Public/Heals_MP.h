@@ -4,26 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "ItemObject.h"
-#include "Heals.generated.h"
+#include "Heals_MP.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SOULLIKE_API UHeals : public UItemObject
+class SOULLIKE_API UHeals_MP : public UItemObject
 {
 	GENERATED_BODY()
-	
+
 public:
 
 	virtual void UseItem() override;
 
 protected:
 
-
 private:
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Heals Data")
-	int healAmount_HP;
+	int healAmount_MP;
 
 };
