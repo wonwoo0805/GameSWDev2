@@ -7,15 +7,7 @@ UItemObject::UItemObject() {
 
 }
 
-int UItemObject::TryUse() {
-	if (itemNum <= 0) {
-		return 0;
-	}
 
-	//if(don't move, jump, attack) return 0;
-
-	return 1;
-}
 
 void UItemObject::Add_ConsumeItem(int changeNum) {
 	itemNum += changeNum;
@@ -23,8 +15,6 @@ void UItemObject::Add_ConsumeItem(int changeNum) {
 	return;
 }
 
-void UItemObject::UseItem() {
-	//have no function
-}
+
 
 

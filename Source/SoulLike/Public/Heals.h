@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ItemObject.h"
+#include "UsableItem.h"
 #include "Heals.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SOULLIKE_API UHeals : public UItemObject
+class SOULLIKE_API UHeals : public UUsableItem
 {
 	GENERATED_BODY()
 	

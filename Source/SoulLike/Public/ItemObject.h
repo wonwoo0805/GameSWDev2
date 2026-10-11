@@ -9,6 +9,9 @@
 /**
  * 
  */
+
+class ASoulLikeCharacter;
+
 UCLASS(Blueprintable)
 class SOULLIKE_API UItemObject : public UObject
 {
@@ -17,7 +20,7 @@ class SOULLIKE_API UItemObject : public UObject
 public:
 	
 	UItemObject();
-	int TryUse();
+	
 	void Add_ConsumeItem(int changeNum);
 
 protected:
@@ -42,6 +45,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Data")
 	UAnimMontage* itemAnimation_3D;
 
-	virtual void UseItem();
+	
 	
 };
