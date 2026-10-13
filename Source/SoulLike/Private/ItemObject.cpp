@@ -15,6 +15,6 @@ void UItemObject::Add_ConsumeItem(int changeNum) {
 	return;
 }
 
-
+int32 UItemObject::getItemNum() { return itemNum; }
 
 

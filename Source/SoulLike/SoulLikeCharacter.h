@@ -7,6 +7,7 @@
 #include "SoulLikeCharacter.generated.h"
 
 class UItemObject;
+class UUsableItem;
 
 UCLASS()
 class SOULLIKE_API ASoulLikeCharacter : public ACharacter
@@ -58,6 +59,18 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	bool bIsDead = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	TArray<TObjectPtr<UUsableItem>> Inventory;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory|Setup")
+	TSubclassOf<UUsableItem> Slot0_ItemClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory|Setup")
+	TSubclassOf<UUsableItem> Slot1_ItemClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory|Setup")
+	TSubclassOf<UUsableItem> Slot2_ItemClass;
 
 protected:
 	// Called when the game starts or when spawned

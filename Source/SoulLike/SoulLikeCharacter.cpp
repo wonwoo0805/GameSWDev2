@@ -3,6 +3,7 @@
 
 #include "SoulLikeCharacter.h"
 #include "ItemObject.h"
+#include "UsableItem.h"
 
 // Sets default values
 ASoulLikeCharacter::ASoulLikeCharacter()
@@ -17,6 +18,26 @@ void ASoulLikeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	
+	Inventory.SetNum(3);
+    if (Slot0_ItemClass)
+    {
+        Inventory[0] = NewObject<UUsableItem>(this, Slot0_ItemClass);
+    }
+    if (Slot1_ItemClass)
+    {
+        Inventory[1] = NewObject<UUsableItem>(this, Slot1_ItemClass);
+    }
+    if (Slot2_ItemClass)
+    {
+        Inventory[2] = NewObject<UUsableItem>(this, Slot2_ItemClass);
+    }
+
+	
+	
+
+
+
 }
 
 // Called every frame

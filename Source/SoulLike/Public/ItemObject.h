@@ -22,6 +22,7 @@ public:
 	UItemObject();
 	
 	void Add_ConsumeItem(int changeNum);
+	int32 getItemNum();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Data")
@@ -31,7 +32,7 @@ protected:
 	int32 itemMaxNum;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Data")
-	int32 itemNum;
+	int32 itemNum = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Data")
 	FText itemName;
