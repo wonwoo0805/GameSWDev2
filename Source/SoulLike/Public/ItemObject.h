@@ -23,6 +23,11 @@ public:
 	
 	void Add_ConsumeItem(int changeNum);
 	int32 getItemNum();
+	int32 getItemMaxNum();
+	UTexture2D* getItemIcon_2D();
+	UStaticMesh* getItemModel_3D();
+	UAnimMontage* getItemAnimation_3D();
+
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Data")

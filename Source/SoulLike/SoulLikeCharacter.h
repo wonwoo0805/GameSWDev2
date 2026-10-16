@@ -69,7 +69,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory|Setup")
 	TSubclassOf<UUsableItem> Slot1_ItemClass;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory|Setup")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory|Setup")
 	TSubclassOf<UUsableItem> Slot2_ItemClass;
 
 protected:

@@ -34,7 +34,7 @@ void ASoulLikeCharacter::BeginPlay()
     }
 
 	
-	
+    //UpdateItemSlots();
 
 
 

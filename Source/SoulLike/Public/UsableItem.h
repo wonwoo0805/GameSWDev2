@@ -17,6 +17,15 @@ class SOULLIKE_API UUsableItem : public UItemObject
 public:
 	int TryUse();
 
+	UFUNCTION(BlueprintPure, Category = "Item Data")
+	int32 GetItemNum() const { return itemNum; }
+
+	UFUNCTION(BlueprintPure, Category = "Item Data")
+	UTexture2D* GetItemIcon() const { return itemIcon_2D; }
+
+	UFUNCTION(BlueprintPure, Category = "Item Data")
+	FText GetItemName() const { return itemName; }
+
 protected:
 
 
