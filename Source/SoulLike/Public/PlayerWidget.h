@@ -45,13 +45,13 @@ protected:
 	UProgressBar* SP_Bar;
 
 	UPROPERTY(meta = (BindWidget))
-	UImage* HPPotionImg;        
+	UImage* HPPotionSlot;        
 
 	UPROPERTY(meta = (BindWidget))
-	UImage* MPPotionImg;
+	UImage* MPPotionSlot;
 
 	UPROPERTY(meta = (BindWidget))
-	UImage* GenerationPotionImg;
+	UImage* GenerationPotionSlot;
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* MiddleItemName; 

@@ -22,11 +22,11 @@ public:
 	UItemObject();
 	
 	void Add_ConsumeItem(int changeNum);
-	int32 getItemNum();
-	int32 getItemMaxNum();
-	UTexture2D* getItemIcon_2D();
-	UStaticMesh* getItemModel_3D();
-	UAnimMontage* getItemAnimation_3D();
+	int32 GetItemNum();
+	int32 GetItemMaxNum();
+	UTexture2D* GetItemIcon_2D();
+	UStaticMesh* GetItemModel_3D();
+	UAnimMontage* GetItemAnimation_3D();
 
 
 protected:

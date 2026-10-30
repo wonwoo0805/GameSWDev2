@@ -26,9 +26,20 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Item Data")
 	FText GetItemName() const { return itemName; }
 
+	UFUNCTION(BlueprintPure, Category = "Item Data")
+	UTexture2D* GetItemIcon_Half_2D() const { return itemIcon_Half_2D; }
+
+	UFUNCTION(BlueprintPure, Category = "Item Data")
+	UTexture2D* GetItemIcon_Empty_2D() const { return itemIcon_Empty_2D; }
+
 protected:
 
 
 	virtual void UseItem();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Data")
+	UTexture2D* itemIcon_Half_2D;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Data")
+	UTexture2D* itemIcon_Empty_2D;
 
 };

@@ -72,9 +72,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory|Setup")
 	TSubclassOf<UUsableItem> Slot2_ItemClass;
 
+	int CenterSlotIndex;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<class UPlayerWidget> PlayerWidgetClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
+	TObjectPtr<class UPlayerWidget> PlayerWidget;
 
 public:	
 	// Called every frame

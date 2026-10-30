@@ -25,5 +25,5 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), Category = "Heals Data")
 	int healAmount_HP;
-
+	
 };
