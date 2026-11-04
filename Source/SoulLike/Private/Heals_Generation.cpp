@@ -4,7 +4,7 @@
 #include "Heals_Generation.h"
 
 
-void UHeals_Generation::UseItem() {
+void UHeals_Generation::UseItem(ASoulLikeCharacter* thisCharacter) {
 
 }
 
