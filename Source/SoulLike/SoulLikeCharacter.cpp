@@ -74,3 +74,15 @@ void ASoulLikeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 }
 
+void ASoulLikeCharacter::ChangeCenterSlot(int32 Direction)
+{
+	// 1. 0, 1, 2 사이를 순환하도록 중앙 슬롯 인덱스 변경
+	// (+3을 더해준 뒤 % 3을 하면 음수가 나와도 0 -> 2 -> 1 -> 0으로 안전하게 순환합니다)
+	CenterSlotIndex = (CenterSlotIndex + Direction + 3) % 3;
+
+	// 2. 위젯의 슬롯 이동 함수 실행 (이동 함수 내부 마지막에 UpdateItemSlots가 호출됨)
+	if (PlayerWidget != nullptr)
+	{
+		PlayerWidget->MoveItemSlots(Inventory, CenterSlotIndex);
+	}
+}
