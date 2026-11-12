@@ -35,7 +35,7 @@ public:
 protected:
 
 
-	virtual void UseItem();
+	virtual void UseItem(ASoulLikeCharacter *thisCharacter);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Data")
 	UTexture2D* itemIcon_Half_2D;

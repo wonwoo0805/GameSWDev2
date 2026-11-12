@@ -16,7 +16,7 @@ class SOULLIKE_API UHeals_Generation : public UUsableItem
 	
 public:
 
-	virtual void UseItem() override;
+	virtual void UseItem(ASoulLikeCharacter* thisCharacter) override;
 
 protected:
 

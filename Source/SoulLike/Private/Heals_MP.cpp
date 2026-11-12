@@ -3,7 +3,7 @@
 
 #include "Heals_MP.h"
 
-void UHeals_MP::UseItem() {
+void UHeals_MP::UseItem(ASoulLikeCharacter* thisCharacter) {
 
 }
 
