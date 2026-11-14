@@ -72,6 +72,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory|Setup")
 	TSubclassOf<UUsableItem> Slot2_ItemClass;
 
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void ChangeCenterSlot(int32 Direction);
+
 	int CenterSlotIndex;
 
 protected:

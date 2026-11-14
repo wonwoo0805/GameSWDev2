@@ -14,7 +14,7 @@ int UUsableItem::TryUse() {
 	return 1;
 }
 
-void UUsableItem::UseItem() {
+void UUsableItem::UseItem(ASoulLikeCharacter* thisCharacter) {
 	//have no function
 }
 
