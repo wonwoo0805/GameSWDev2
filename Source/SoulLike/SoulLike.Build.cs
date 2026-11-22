@@ -8,11 +8,7 @@ public class SoulLike : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-<<<<<<< HEAD
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput","UMG" });
-=======
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "UMG" });
->>>>>>> origin/development
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

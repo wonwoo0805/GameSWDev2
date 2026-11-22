@@ -60,7 +60,7 @@ void AMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 float AMonsterBase::TakeDamage(float DamageAmount,FDamageEvent const& DamageEvent,AController* EventInstigator,AActor* DamageCauser)
 {
 	float ActualDamage = Super::TakeDamage(DamageAmount,DamageEvent,EventInstigator,DamageCauser);
-
+	UE_LOG(LogTemp,Warning,TEXT("HIT"));
 	if(ActualDamage <= 0.f || CurrentHealth <= 0.f)
 	{
 		return 0.f;
