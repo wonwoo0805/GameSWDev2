@@ -54,6 +54,8 @@ public:
 	virtual float TakeDamage(float DamageAmount,struct FDamageEvent const& DamageEvent,class AController* EventInstigator,AActor* DamageCauser) override;
 	
 	AMonsterBase();
+    UFUNCTION(BlueprintImplementableEvent, Category = "Destructible")
+	void OnPartDestroyed(FName BrokenBoneName);
 
 protected:
 	// Called when the game starts or when spawned
