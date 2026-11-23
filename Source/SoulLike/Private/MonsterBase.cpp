@@ -26,28 +26,37 @@ void AMonsterBase::BeginPlay()
 // Called every frame
 void AMonsterBase::Tick(float DeltaTime)
 {
-    Super::Tick(DeltaTime);
+	Super::Tick(DeltaTime);
 
-    // 1. 월드에 있는 첫 번째 플레이어(로컬/호스트) 폰 가져오기
-    APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if (CurrentHealth <= 0.f)
+	{
+		return;
+	}
 
-    // 플레이어가 살아있고 유효할 때만 실행
-    if (PlayerPawn)
-    {
-        // 2. 내 위치에서 플레이어 위치를 바라보는 목표 회전값(Rotator) 계산
-        FRotator TargetRot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PlayerPawn->GetActorLocation());
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if (!PlayerPawn)
+	{
+		return;
+	}
 
-        // 3. 몬스터가 하늘을 보거나 땅으로 처박히지 않도록 좌우(Yaw) 회전만 남기기
-        TargetRot.Pitch = 0.f;
-        TargetRot.Roll = 0.f;
+	// 공격 중이 아닐 때만 플레이어 방향으로 회전
+	if (!bIsAttacking)
+	{
+		FRotator TargetRot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PlayerPawn->GetActorLocation());
+		TargetRot.Pitch = 0.f;
+		TargetRot.Roll = 0.f;
 
-        // 4. 확 돌아보는 게 아니라 부드럽게 휙~ 쳐다보도록 보간(Interpolation) 적용
-        // 마지막 숫자인 5.0f를 올리면 홱홱 돌아보고, 낮추면 묵직하게 돌아보지요
-        FRotator SmoothRot = FMath::RInterpTo(GetActorRotation(), TargetRot, DeltaTime, 5.0f);
+		FRotator SmoothRot = FMath::RInterpTo(GetActorRotation(), TargetRot, DeltaTime, 3.0f);
+		SetActorRotation(SmoothRot);
 
-        // 5. 몬스터 본체 회전 적용
-        SetActorRotation(SmoothRot);
-    }
+		// 사거리 이내이고 쿨타임이 지났으면 공격 실행
+		const float DistToPlayer = FVector::Dist(GetActorLocation(), PlayerPawn->GetActorLocation());
+		const float CurrentTime = GetWorld()->GetTimeSeconds();
+		if (DistToPlayer <= AttackRange && (CurrentTime - LastAttackTime) >= AttackCooldown)
+		{
+			PerformAttack();
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -137,5 +146,40 @@ float AMonsterBase::TakeDamage(float DamageAmount,FDamageEvent const& DamageEven
 
 	return ActualDamage;
 
+}
+
+
+void AMonsterBase::PerformAttack()
+{
+	if (bIsAttacking || !AttackMontage)
+	{
+		return;
+	}
+
+	UAnimInstance* AnimInstance = GetMesh() ? GetMesh()->GetAnimInstance() : nullptr;
+	if (!AnimInstance)
+	{
+		return;
+	}
+
+	bIsAttacking = true;
+	LastAttackTime = GetWorld()->GetTimeSeconds();
+
+	const float Duration = AnimInstance->Montage_Play(AttackMontage, 1.0f);
+	if (Duration > 0.f)
+	{
+		FOnMontageEnded EndDelegate;
+		EndDelegate.BindUObject(this, &AMonsterBase::OnAttackMontageEnded);
+		AnimInstance->Montage_SetEndDelegate(EndDelegate, AttackMontage);
+	}
+	else
+	{
+		bIsAttacking = false;
+	}
+}
+
+void AMonsterBase::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	bIsAttacking = false;
 }
 
