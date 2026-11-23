@@ -85,6 +85,22 @@ float AMonsterBase::TakeDamage(float DamageAmount,FDamageEvent const& DamageEven
 			HitBoneName = RadialDamageEvent->ComponentHits[0].BoneName;
 		}
 	}
+	// 1. 맞은 본이 DestructibleParts에 없으면 부모 본을 타고 올라가며 대표 부위 찾기
+	// (예: foot_l -> calf_l -> thigh_l 순서로 탐색)
+	if (HitBoneName != NAME_None && GetMesh())
+	{
+		FName CurrentBone = HitBoneName;
+		while (CurrentBone != NAME_None && !DestructibleParts.Contains(CurrentBone))
+		{
+			CurrentBone = GetMesh()->GetParentBone(CurrentBone);
+		}
+
+		// 상위 부모 중 DestructibleParts에 등록된 본을 찾았다면 해당 본으로 교체
+		if (CurrentBone != NAME_None)
+		{
+			HitBoneName = CurrentBone;
+		}
+	}
 
 	if(HitBoneName != NAME_None && DestructibleParts.Contains(HitBoneName))
 	{
@@ -100,7 +116,17 @@ float AMonsterBase::TakeDamage(float DamageAmount,FDamageEvent const& DamageEven
 				Part.bIsDestroyed = true;
 
 				UE_LOG(LogTemp,Warning,TEXT("part broken : %s"),*HitBoneName.ToString());
+
+				// [추가] 부위 메시 숨기기 + 해당 부위 콜리전/피직스 비활성화
+				if (GetMesh())
+				{
+					// PBO_Term: 해당 본과 하위 자식 본들의 피직스 바디를 종료시켜 허공에 맞는 현상 방지
+					GetMesh()->HideBoneByName(HitBoneName, EPhysBodyOp::PBO_Term);
+				}
+
+				OnPartDestroyed(HitBoneName);
 			}
+
 		}
 	}
 
