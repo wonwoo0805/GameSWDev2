@@ -15,7 +15,8 @@ class SOULLIKE_API UUsableItem : public UItemObject
 	GENERATED_BODY()
 	
 public:
-	int TryUse();
+	UFUNCTION(BlueprintCallable, Category = "Item")
+	bool TryUse(ASoulLikeCharacter* thisCharacter);
 
 	UFUNCTION(BlueprintPure, Category = "Item Data")
 	int32 GetItemNum() const { return itemNum; }
@@ -33,9 +34,7 @@ public:
 	UTexture2D* GetItemIcon_Empty_2D() const { return itemIcon_Empty_2D; }
 
 protected:
-
-
-	virtual void UseItem(ASoulLikeCharacter *thisCharacter);
+	virtual void UseItem(ASoulLikeCharacter* thisCharacter) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Data")
 	UTexture2D* itemIcon_Half_2D;
