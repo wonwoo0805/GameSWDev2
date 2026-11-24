@@ -42,17 +42,29 @@ void AMonsterBase::Tick(float DeltaTime)
 	// 공격 중이 아닐 때만 플레이어 방향으로 회전
 	if (!bIsAttacking)
 	{
-		FRotator TargetRot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PlayerPawn->GetActorLocation());
+		FVector ToPlayer = PlayerPawn->GetActorLocation() - GetActorLocation();
+		ToPlayer.Z = 0.f; // 높이 차이를 제외한 수평 방향만 계산
+
+		FRotator TargetRot = ToPlayer.Rotation();
 		TargetRot.Pitch = 0.f;
 		TargetRot.Roll = 0.f;
 
-		FRotator SmoothRot = FMath::RInterpTo(GetActorRotation(), TargetRot, DeltaTime, 3.0f);
+		// 회전 속도를 조금 더 민첩하게 조절 (기존 5.0f -> 7.0f~8.0f 추천)
+		FRotator SmoothRot = FMath::RInterpTo(GetActorRotation(), TargetRot, DeltaTime, 7.5f);
 		SetActorRotation(SmoothRot);
 
-		// 사거리 이내이고 쿨타임이 지났으면 공격 실행
-		const float DistToPlayer = FVector::Dist(GetActorLocation(), PlayerPawn->GetActorLocation());
+		// 1. 거리 체크
+		const float DistToPlayer = ToPlayer.Size();
+
+		// 2. 정면 각도 체크 (몬스터 정면 벡터와 플레이어 방향 벡터의 내적)
+		const FVector ForwardDir = GetActorForwardVector().GetSafeNormal2D();
+		const FVector DirToPlayer = ToPlayer.GetSafeNormal();
+		const float DotResult = FVector::DotProduct(ForwardDir, DirToPlayer);
+		const float AngleDeg = FMath::RadiansToDegrees(FMath::Acos(FMath::Clamp(DotResult, -1.0f, 1.0f)));
+
+		// 3. 사거리 이내 + 정면 각도 이내 + 쿨타임 경과 시에만 공격 실행
 		const float CurrentTime = GetWorld()->GetTimeSeconds();
-		if (DistToPlayer <= AttackRange && (CurrentTime - LastAttackTime) >= AttackCooldown)
+		if (DistToPlayer <= AttackRange && AngleDeg <= AttackAngleThreshold && (CurrentTime - LastAttackTime) >= AttackCooldown)
 		{
 			PerformAttack();
 		}

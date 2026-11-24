@@ -46,6 +46,8 @@ void ASoulLikeCharacter::BeginPlay()
 
 			// [순서 3] 위젯이 화면에 떴고 인벤토리도 준비되었으니 첫 화면 상태 초기화!
 			CenterSlotIndex = 0; // 시작 시 0번(HP 포션)을 중앙 슬롯으로 설정
+			MaxHealth = PlayerWidget->MaxHp;
+			Health = MaxHealth;
 
 			// 체력/스태미나 바를 가득 찬 상태로 초기화 (위젯 내부의 MaxHp, MaxSp 기준)
 			PlayerWidget->UpdatePlayerHPSP(PlayerWidget->MaxHp, PlayerWidget->MaxSp);
@@ -85,4 +87,38 @@ void ASoulLikeCharacter::ChangeCenterSlot(int32 Direction)
 	{
 		PlayerWidget->MoveItemSlots(Inventory, CenterSlotIndex);
 	}
+}
+
+float ASoulLikeCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	// 1. 구르기 중(무적 프레임)이거나 이미 사망했으면 데미지 무시
+	if (bIsDodging || Health <= 0.f)
+	{
+		return 0.f;
+	}
+
+	const float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if (ActualDamage <= 0.f)
+	{
+		return 0.f;
+	}
+
+	// 2. 체력 차감 및 0 미만 방지
+	Health = FMath::Clamp(Health - ActualDamage, 0.f, MaxHealth);
+	UE_LOG(LogTemp, Warning, TEXT("Player Damaged! CurrentHealth: %f / %f"), Health, MaxHealth);
+
+	// 3. 상단 HP/SP 위젯 갱신 (현재 SP 변수가 있으면 함께 전달)
+	if (PlayerWidget != nullptr)
+	{
+		PlayerWidget->UpdatePlayerHPSP(Health, PlayerWidget->MaxSp);
+	}
+
+	// 4. 사망 처리
+	if (Health <= 0.f)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Player Died!"));
+		// 필요 시 사망 몽타주 재생이나 입력 비활성화 추가
+	}
+
+	return ActualDamage;
 }

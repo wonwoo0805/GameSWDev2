@@ -96,4 +96,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 	void PerformAttack();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	float AttackAngleThreshold = 35.f;
+
 };
