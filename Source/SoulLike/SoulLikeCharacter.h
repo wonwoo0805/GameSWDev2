@@ -60,6 +60,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	bool bIsDead = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	bool bIsUsingItem = false;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Item")
+	int CenterSlotIndex;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	TArray<TObjectPtr<UUsableItem>> Inventory;
 
@@ -75,7 +81,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void ChangeCenterSlot(int32 Direction);
 
-	int CenterSlotIndex;
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void UseCurrentItem();
+
+	// Function to bind to IA_Pause (Started)
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void TogglePauseMenu();
+
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -86,6 +99,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	TObjectPtr<class UPlayerWidget> PlayerWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+	TSubclassOf<class UESCWidget> PauseMenuClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
+	TObjectPtr<class UESCWidget> PauseMenuWidget;
 
 public:	
 	// Called every frame

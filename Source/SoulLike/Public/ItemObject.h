@@ -30,6 +30,9 @@ public:
 
 
 protected:
+	UFUNCTION(BlueprintCallable, Category = "Item")
+	virtual void UseItem(ASoulLikeCharacter* thisCharacter);
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item Data")
 	int32 itemID;
 

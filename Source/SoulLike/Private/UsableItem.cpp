@@ -4,18 +4,22 @@
 #include "UsableItem.h"
 #include "../SoulLikeCharacter.h"
 
-int UUsableItem::TryUse() {
+bool UUsableItem::TryUse(ASoulLikeCharacter* thisCharacter) {
 	if (itemNum <= 0) {
-		return 0;
+		return false;
 	}
 
-	//if(don't move, jump, attack) return 0;
+	//if(jump, dodge, attack, potion, hit, dead) return 0;
 
-	return 1;
+	thisCharacter->bIsUsingItem = true;
+
+	return true;
 }
 
 void UUsableItem::UseItem(ASoulLikeCharacter* thisCharacter) {
-	//have no function
+	thisCharacter->bIsUsingItem = false;
+
+	return;
 }
 
 

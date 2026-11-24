@@ -5,7 +5,11 @@
 
 
 void UHeals_Generation::UseItem(ASoulLikeCharacter* thisCharacter) {
+	Add_ConsumeItem(-1);
 
+	Super::UseItem(thisCharacter);
+
+	return;
 }
 
 

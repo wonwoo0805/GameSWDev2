@@ -5,6 +5,7 @@
 #include "ItemObject.h"
 #include "UsableItem.h"
 #include "PlayerWidget.h"
+#include "ESCWidget.h"
 
 // Sets default values
 ASoulLikeCharacter::ASoulLikeCharacter()
@@ -122,3 +123,32 @@ float ASoulLikeCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dam
 
 	return ActualDamage;
 }
+
+void ASoulLikeCharacter::UseCurrentItem()
+{
+	if (!Inventory.IsValidIndex(CenterSlotIndex) || Inventory[CenterSlotIndex] == nullptr)
+	{
+		return;
+	}
+
+	// Execute UseItem on the item currently in the center slot
+	//Inventory[CenterSlotIndex]->UseItem(this);
+
+	// Refresh slot icons (Full -> Half -> Empty) and remaining count text
+	if (PlayerWidget != nullptr)
+	{
+		PlayerWidget->UpdateItemSlots(Inventory, CenterSlotIndex);
+	}
+}
+
+void ASoulLikeCharacter::TogglePauseMenu()
+{
+	if (PauseMenuWidget == nullptr && PauseMenuClass != nullptr)
+	{
+		PauseMenuWidget = CreateWidget<UESCWidget>(GetWorld(), PauseMenuClass);
+	}
+
+	if (PauseMenuWidget != nullptr)
+	{
+		PauseMenuWidget->TogglePauseMenu();
+	}

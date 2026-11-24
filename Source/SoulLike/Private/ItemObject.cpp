@@ -15,6 +15,11 @@ void UItemObject::Add_ConsumeItem(int changeNum) {
 	return;
 }
 
+void UItemObject::UseItem(ASoulLikeCharacter* thisCharacter) {
+	
+}
+
+
 int32 UItemObject::GetItemNum() { return itemNum; }
 int32 UItemObject::GetItemMaxNum() { return itemMaxNum; }
 UTexture2D* UItemObject::GetItemIcon_2D() { return itemIcon_2D; };
