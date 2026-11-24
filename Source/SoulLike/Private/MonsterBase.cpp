@@ -26,28 +26,49 @@ void AMonsterBase::BeginPlay()
 // Called every frame
 void AMonsterBase::Tick(float DeltaTime)
 {
-    Super::Tick(DeltaTime);
+	Super::Tick(DeltaTime);
 
-    // 1. 월드에 있는 첫 번째 플레이어(로컬/호스트) 폰 가져오기
-    APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if (CurrentHealth <= 0.f)
+	{
+		return;
+	}
 
-    // 플레이어가 살아있고 유효할 때만 실행
-    if (PlayerPawn)
-    {
-        // 2. 내 위치에서 플레이어 위치를 바라보는 목표 회전값(Rotator) 계산
-        FRotator TargetRot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PlayerPawn->GetActorLocation());
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if (!PlayerPawn)
+	{
+		return;
+	}
 
-        // 3. 몬스터가 하늘을 보거나 땅으로 처박히지 않도록 좌우(Yaw) 회전만 남기기
-        TargetRot.Pitch = 0.f;
-        TargetRot.Roll = 0.f;
+	// 공격 중이 아닐 때만 플레이어 방향으로 회전
+	if (!bIsAttacking)
+	{
+		FVector ToPlayer = PlayerPawn->GetActorLocation() - GetActorLocation();
+		ToPlayer.Z = 0.f; // 높이 차이를 제외한 수평 방향만 계산
 
-        // 4. 확 돌아보는 게 아니라 부드럽게 휙~ 쳐다보도록 보간(Interpolation) 적용
-        // 마지막 숫자인 5.0f를 올리면 홱홱 돌아보고, 낮추면 묵직하게 돌아보지요
-        FRotator SmoothRot = FMath::RInterpTo(GetActorRotation(), TargetRot, DeltaTime, 5.0f);
+		FRotator TargetRot = ToPlayer.Rotation();
+		TargetRot.Pitch = 0.f;
+		TargetRot.Roll = 0.f;
 
-        // 5. 몬스터 본체 회전 적용
-        SetActorRotation(SmoothRot);
-    }
+		// 회전 속도를 조금 더 민첩하게 조절 (기존 5.0f -> 7.0f~8.0f 추천)
+		FRotator SmoothRot = FMath::RInterpTo(GetActorRotation(), TargetRot, DeltaTime, 7.5f);
+		SetActorRotation(SmoothRot);
+
+		// 1. 거리 체크
+		const float DistToPlayer = ToPlayer.Size();
+
+		// 2. 정면 각도 체크 (몬스터 정면 벡터와 플레이어 방향 벡터의 내적)
+		const FVector ForwardDir = GetActorForwardVector().GetSafeNormal2D();
+		const FVector DirToPlayer = ToPlayer.GetSafeNormal();
+		const float DotResult = FVector::DotProduct(ForwardDir, DirToPlayer);
+		const float AngleDeg = FMath::RadiansToDegrees(FMath::Acos(FMath::Clamp(DotResult, -1.0f, 1.0f)));
+
+		// 3. 사거리 이내 + 정면 각도 이내 + 쿨타임 경과 시에만 공격 실행
+		const float CurrentTime = GetWorld()->GetTimeSeconds();
+		if (DistToPlayer <= AttackRange && AngleDeg <= AttackAngleThreshold && (CurrentTime - LastAttackTime) >= AttackCooldown)
+		{
+			PerformAttack();
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -137,5 +158,40 @@ float AMonsterBase::TakeDamage(float DamageAmount,FDamageEvent const& DamageEven
 
 	return ActualDamage;
 
+}
+
+
+void AMonsterBase::PerformAttack()
+{
+	if (bIsAttacking || !AttackMontage)
+	{
+		return;
+	}
+
+	UAnimInstance* AnimInstance = GetMesh() ? GetMesh()->GetAnimInstance() : nullptr;
+	if (!AnimInstance)
+	{
+		return;
+	}
+
+	bIsAttacking = true;
+	LastAttackTime = GetWorld()->GetTimeSeconds();
+
+	const float Duration = AnimInstance->Montage_Play(AttackMontage, 1.0f);
+	if (Duration > 0.f)
+	{
+		FOnMontageEnded EndDelegate;
+		EndDelegate.BindUObject(this, &AMonsterBase::OnAttackMontageEnded);
+		AnimInstance->Montage_SetEndDelegate(EndDelegate, AttackMontage);
+	}
+	else
+	{
+		bIsAttacking = false;
+	}
+}
+
+void AMonsterBase::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	bIsAttacking = false;
 }
 
