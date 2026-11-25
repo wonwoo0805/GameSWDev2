@@ -152,3 +152,4 @@ void ASoulLikeCharacter::TogglePauseMenu()
 	{
 		PauseMenuWidget->TogglePauseMenu();
 	}
+}
