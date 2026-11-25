@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "MonsterBase.h"
@@ -7,6 +7,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "BossHUDWidget.h"
+#include "Blueprint/UserWidget.h"
 
 // Sets default values
 AMonsterBase::AMonsterBase()
@@ -86,7 +88,11 @@ void AMonsterBase::Tick(float DeltaTime)
 	// 4. 추적 범위 안 (AttackRange < 거리 <= ChaseRange): 플레이어 쪽으로 이동
 	if (DistToPlayer <= ChaseRange)
 	{
+		ShowBossHUD();
 		AddMovementInput(DirToPlayer, 1.0f);
+	}
+	else {
+		HideBossHUD();
 	}
 }
 
@@ -108,6 +114,12 @@ float AMonsterBase::TakeDamage(float DamageAmount,FDamageEvent const& DamageEven
 
 	CurrentHealth -= ActualDamage; //take damage to monster's health
 	FName HitBoneName = NAME_None;
+
+	//update boss' health bar
+	if (BossHUDWidget != nullptr)
+	{
+		BossHUDWidget->UpdateBossHP(CurrentHealth, MaxHealth);
+	}
 
 	//if the type of attack is point like point of sword
 	if(DamageEvent.IsOfType(FPointDamageEvent::ClassID))
@@ -261,6 +273,7 @@ void AMonsterBase::Die()
 	}
 	bIsDead = true;
 	bIsAttacking = false;
+	HideBossHUD();
 
 	UE_LOG(LogTemp, Warning, TEXT("Monster Died!"));
 
@@ -319,5 +332,32 @@ void AMonsterBase::Die()
 
 	// 6. 5초 뒤 자동으로 Destroy() 호출되도록 수명 설정
 	SetLifeSpan(5.0f);
+}
+
+void AMonsterBase::ShowBossHUD()
+{
+	if (!bIsBoss || bIsDead || BossHUDClass == nullptr) return;
+
+	// create bossHUD
+	if (BossHUDWidget == nullptr)
+	{
+		BossHUDWidget = CreateWidget<UBossHUDWidget>(GetWorld(), BossHUDClass);
+	}
+
+	//fix HUD on ViewPort
+	if (BossHUDWidget != nullptr && !BossHUDWidget->IsInViewport())
+	{
+		BossHUDWidget->InitBossInfo(BossName, CurrentHealth, MaxHealth);
+		BossHUDWidget->AddToViewport(5);
+	}
+}
+
+void AMonsterBase::HideBossHUD()
+{
+	//remove bossHUD
+	if (BossHUDWidget != nullptr && BossHUDWidget->IsInViewport())
+	{
+		BossHUDWidget->RemoveFromParent();
+	}
 }
 

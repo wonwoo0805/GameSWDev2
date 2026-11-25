@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -62,9 +62,24 @@ protected:
 	virtual void BeginPlay() override;
     float LastAttackTime = -100.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI|Boss")
+	bool bIsBoss = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI|Boss")
+	FText BossName = FText::FromString(TEXT("Boss"));
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI|Boss")
+	TSubclassOf<class UBossHUDWidget> BossHUDClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI|Boss")
+	TObjectPtr<class UBossHUDWidget> BossHUDWidget;
+
 	// 몽타주 종료 시 호출될 콜백
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+
+	void ShowBossHUD();
+	void HideBossHUD();
 
 public:	
 	// Called every frame
