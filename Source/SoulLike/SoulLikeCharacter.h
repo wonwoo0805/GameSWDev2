@@ -31,6 +31,12 @@ public:
 	float Stamina = 50.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	float MaxMana = 50.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
+	float Mana = 50.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	float Attack = 20.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
@@ -88,7 +94,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void TogglePauseMenu();
 
-	
+	UFUNCTION(BlueprintCallable, Category = "Player Stat")
+	void HealHP(float Amount);
+	/*
+	UFUNCTION(BlueprintCallable, Category = "Player Stat")
+	void RestoreMP(float Amount);
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stat")
+	void StartRegenHP(float AmountPerSecond, int32 DurationSeconds);
+	*/
 
 protected:
 	// Called when the game starts or when spawned

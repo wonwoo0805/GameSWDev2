@@ -31,6 +31,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stat")
 	int32 MaxSp = 500;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stat")
+	int32 MaxMp = 400;
+
 	UFUNCTION(BlueprintCallable, Category = "HUD")
 	void UpdatePlayerHPSP(int newHp, int newSp);
 	UFUNCTION(BlueprintCallable, Category = "HUD")
@@ -97,6 +100,9 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	UProgressBar* SP_Bar;
+
+	UPROPERTY(meta = (BindWidget))
+	UProgressBar* MP_Bar;
 
 	UPROPERTY(meta = (BindWidget))
 	UImage* HPPotionSlot;

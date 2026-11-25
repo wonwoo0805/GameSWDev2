@@ -2,6 +2,7 @@
 
 
 #include "Heals_Generation.h"
+#include "../SoulLikeCharacter.h"
 
 
 void UHeals_Generation::UseItem(ASoulLikeCharacter* thisCharacter) {

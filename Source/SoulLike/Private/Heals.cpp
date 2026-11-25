@@ -2,6 +2,7 @@
 
 
 #include "Heals.h"
+#include "../SoulLikeCharacter.h"
 
 void UHeals::UseItem(ASoulLikeCharacter* thisCharacter) {
 	//캐릭터의 체력 회복
@@ -9,6 +10,11 @@ void UHeals::UseItem(ASoulLikeCharacter* thisCharacter) {
 	//thisCharacter->heals(healAmount_HP);
 
 	Add_ConsumeItem(-1);
+
+	if (thisCharacter != nullptr)
+	{
+		thisCharacter->HealHP(healAmount_HP);
+	}
 
 	Super::UseItem(thisCharacter);
 

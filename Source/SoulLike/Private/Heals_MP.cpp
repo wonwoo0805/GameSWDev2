@@ -2,6 +2,7 @@
 
 
 #include "Heals_MP.h"
+#include "../SoulLikeCharacter.h"
 
 void UHeals_MP::UseItem(ASoulLikeCharacter* thisCharacter) {
 
