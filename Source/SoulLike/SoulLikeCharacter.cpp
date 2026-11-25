@@ -153,3 +153,48 @@ void ASoulLikeCharacter::TogglePauseMenu()
 		PauseMenuWidget->TogglePauseMenu();
 	}
 }
+
+void ASoulLikeCharacter::HealHP(float Amount)
+{
+	if (bIsDead || Amount <= 0.0f) return;
+
+	Health = FMath::Clamp(Health + Amount, 0.0f, MaxHealth);
+
+	if (PlayerWidget != nullptr)
+	{
+		PlayerWidget->UpdatePlayerHPSP(Health, Stamina);
+	}
+}
+/*
+void ASoulLikeCharacter::RestoreMP(float Amount)
+{
+	if (bIsDead || Amount <= 0.0f) return;
+
+	Mana = FMath::Clamp(Mana + Amount, 0.0f, MaxMana);
+
+	if (PlayerWidget != nullptr)
+	{
+		PlayerWidget->UpdatePlayerMP(Mana);
+	}
+}
+
+void ASoulLikeCharacter::StartRegenHP(float AmountPerSecond, int32 DurationSeconds)
+{
+	if (bIsDead || DurationSeconds <= 0) return;
+
+	// Clear any existing regen timer so drinking again cleanly refreshes the 8-second duration
+	GetWorldTimerManager().ClearTimer(RegenTimerHandle);
+
+	RegenAmountPerTick = AmountPerSecond;
+	RemainingRegenTicks = DurationSeconds;
+
+	// Call OnRegenTick every 1.0 second (looping)
+	GetWorldTimerManager().SetTimer(
+		RegenTimerHandle,
+		this,
+		&ASoulLikeCharacter::OnRegenTick,
+		1.0f,
+		true
+	);
+}
+*/
