@@ -99,4 +99,30 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	float AttackAngleThreshold = 35.f;
 
+	// 플레이어를 발견하고 쳐다보기 시작하는 거리
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	float DetectRange = 1200.f;
+
+	// 본격적으로 추적을 시작하는 거리 (DetectRange보다 작고 AttackRange보다 커야 함)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	float ChaseRange = 700.f;
+
+	// 추적 시 이동 속도
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	float ChaseSpeed = 300.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	bool bIsDead = false;
+
+	// 사망 시 드롭할 소재/아이템 액터 클래스 (블루프린트에서 지정)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Drop")
+	TSubclassOf<AActor> DropItemClass;
+
+	// 사망 처리 함수
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	virtual void Die();
+
+	// 블루프린트에서 추가 연출(사운드, 파티클, 다중 드롭 테이블 등)을 붙일 때 사용
+	UFUNCTION(BlueprintImplementableEvent, Category = "Combat")
+	void OnMonsterDied();
 };
