@@ -96,10 +96,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Player Stat")
 	void HealHP(float Amount);
-	/*
+	
 	UFUNCTION(BlueprintCallable, Category = "Player Stat")
 	void RestoreMP(float Amount);
-
+	/*
 	UFUNCTION(BlueprintCallable, Category = "Player Stat")
 	void StartRegenHP(float AmountPerSecond, int32 DurationSeconds);
 	*/

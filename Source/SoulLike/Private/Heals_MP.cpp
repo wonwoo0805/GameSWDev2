@@ -10,6 +10,11 @@ void UHeals_MP::UseItem(ASoulLikeCharacter* thisCharacter) {
 
 	Add_ConsumeItem(-1);
 
+	if (thisCharacter != nullptr)
+	{
+		thisCharacter->RestoreMP(healAmount_MP);
+	}
+
 	Super::UseItem(thisCharacter);
 
 	return;

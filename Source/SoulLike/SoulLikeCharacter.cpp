@@ -49,9 +49,13 @@ void ASoulLikeCharacter::BeginPlay()
 			CenterSlotIndex = 0; // 시작 시 0번(HP 포션)을 중앙 슬롯으로 설정
 			MaxHealth = PlayerWidget->MaxHp;
 			Health = MaxHealth;
+			MaxStamina = PlayerWidget->MaxSp;
+			Stamina = MaxStamina;
+			MaxMana = PlayerWidget->MaxMp;
+			Mana = MaxMana;
 
 			// 체력/스태미나 바를 가득 찬 상태로 초기화 (위젯 내부의 MaxHp, MaxSp 기준)
-			PlayerWidget->UpdatePlayerHPSP(PlayerWidget->MaxHp, PlayerWidget->MaxSp);
+			PlayerWidget->UpdatePlayerHPSPMP(PlayerWidget->MaxHp, PlayerWidget->MaxSp, PlayerWidget->MaxMp);
 
 			// 준비된 인벤토리 배열과 중앙 슬롯 번호(0)를 넘겨 슬롯 아이콘/이름/개수 초기화
 			PlayerWidget->UpdateItemSlots(Inventory, CenterSlotIndex);
@@ -111,7 +115,7 @@ float ASoulLikeCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dam
 	// 3. 상단 HP/SP 위젯 갱신 (현재 SP 변수가 있으면 함께 전달)
 	if (PlayerWidget != nullptr)
 	{
-		PlayerWidget->UpdatePlayerHPSP(Health, PlayerWidget->MaxSp);
+		PlayerWidget->UpdatePlayerHPSPMP(Health, Stamina, Mana);
 	}
 
 	// 4. 사망 처리
@@ -162,10 +166,10 @@ void ASoulLikeCharacter::HealHP(float Amount)
 
 	if (PlayerWidget != nullptr)
 	{
-		PlayerWidget->UpdatePlayerHPSP(Health, Stamina);
+		PlayerWidget->UpdatePlayerHPSPMP(Health, Stamina, Mana);
 	}
 }
-/*
+
 void ASoulLikeCharacter::RestoreMP(float Amount)
 {
 	if (bIsDead || Amount <= 0.0f) return;
@@ -174,10 +178,10 @@ void ASoulLikeCharacter::RestoreMP(float Amount)
 
 	if (PlayerWidget != nullptr)
 	{
-		PlayerWidget->UpdatePlayerMP(Mana);
+		PlayerWidget->UpdatePlayerHPSPMP(Health, Stamina, Mana);
 	}
 }
-
+/*
 void ASoulLikeCharacter::StartRegenHP(float AmountPerSecond, int32 DurationSeconds)
 {
 	if (bIsDead || DurationSeconds <= 0) return;

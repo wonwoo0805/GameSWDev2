@@ -158,7 +158,7 @@ void UPlayerWidget::UpdateSingleSlotVisual(UImage* TargetSlot, UUsableItem* Item
 }
 /*------------------------------------------------------------------*/
 
-void UPlayerWidget::UpdatePlayerHPSP(int newHp, int newSp) {
+void UPlayerWidget::UpdatePlayerHPSPMP(int newHp, int newSp, int newMp) {
 	if (HP_Bar) {
 		float hpPercentage = (float)newHp / (float)MaxHp;
 
@@ -169,6 +169,12 @@ void UPlayerWidget::UpdatePlayerHPSP(int newHp, int newSp) {
 		float spPercentage = (float)newSp / (float)MaxSp;
 
 		SP_Bar->SetPercent(spPercentage);
+	}
+
+	if (MP_Bar) {
+		float mpPercentage = (float)newMp / (float)MaxMp;
+
+		MP_Bar->SetPercent(mpPercentage);
 	}
 }
 

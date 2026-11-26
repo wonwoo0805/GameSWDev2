@@ -35,7 +35,7 @@ public:
 	int32 MaxMp = 400;
 
 	UFUNCTION(BlueprintCallable, Category = "HUD")
-	void UpdatePlayerHPSP(int newHp, int newSp);
+	void UpdatePlayerHPSPMP(int newHp, int newSp, int newMP);
 	UFUNCTION(BlueprintCallable, Category = "HUD")
 	void UpdatePlayerStats(int newAtk, int newSpd, int newExtraStat);
 	UFUNCTION(BlueprintCallable, Category = "HUD")
